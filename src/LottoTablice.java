@@ -1,55 +1,30 @@
 import com.sun.source.tree.WhileLoopTree;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class LottoTablice {
 
     public static void main(String[] args) {
 
-
-        // tworzymy tabele z "zakreślonymi" przez użytkownika liczbami
-        Scanner we=new Scanner(System.in);
-        System.err.println("wpisz 6 lisczb 1 - 49");
-        int[] Zakreslone= new int[6];
-        for (int i=0;i<Zakreslone.length;i++)
-         Zakreslone[i] = we.nextInt();
-        // sortujemy tabele
-        Arrays.sort(Zakreslone);
-        we.close();
-        //dekaracja zmiennych
-        // 1)zmienna liczba, która będzie wykorzystana jako licznik porównań dwóch tabeli
-        // 2) Zmienna z, zmieni wartość na True kiedy szóstka zostanie trafiona
-        int liczba=0;
         boolean z;
+        int liczba=0;
+        Scanner we=new Scanner(System.in);
 
-        //Pętla do-while porównuje dwie tabele ze sobą aż do momentu kiedy okaże się że są jednakowe
-        do {       int[] Wylosowane = new int[6];
-            // losowanie unikatowych liczb (tak żeby żadna się nie powtórzyła)
-            Losowanie:
-            for (int i = 0; i < Wylosowane.length; i++) {
-                Random r = new Random();
-                int LiczbaWylosowana = r.nextInt(50)+1;
-                for (int j = 0; j < Wylosowane.length; j++)
-                    if (Wylosowane[j] == LiczbaWylosowana) {
-                        // SPRAWDZZENIE : System.err.println("Powtorzyla sie"); - Liczbę która już została wylosowana , losuje jeszcze raz
-                        i--;
-                        continue Losowanie;
-                    }
-                Wylosowane[i] = LiczbaWylosowana;
-            }
-            //po wylosowaniu liczb sortujemy i porównujemy z tabela liczb wpisanych przez użytkownika
-            Arrays.sort(Wylosowane);
-
-           // System.out.println(Arrays.toString(Wylosowane));
-            //System.out.println(Arrays.toString(Zakreslone)); -SPRAWDZENIE czy posortowane. OK
-             z= Arrays.equals(Wylosowane,Zakreslone);
-            //jeżeli z będzie miała wartość true, to "6" trafiona
-            // zwiększamy licznik prób o 1
-                liczba++;
-        }
+        System.err.println("wpisz 6 lisczb 1 - 49");
+        Set<Integer> Zakreslone= new TreeSet<>();
+        while (Zakreslone.size()<6)
+        {Zakreslone.add(we.nextInt());}
+        System.out.println(Zakreslone);
+        we.close();
+        Set<Integer> Wylosowane= new TreeSet<>();
+        Random r = new Random();
+        do{
+            while (Wylosowane.size()<6)
+            { Wylosowane.add(r.nextInt(49)+1);}
+            z= Wylosowane.equals(Zakreslone);
+            //System.out.println(Wylosowane);
+            Wylosowane.clear();
+            liczba++;}
         while (!z);
         int lata= liczba/365;
         int dni=liczba- lata*365;
